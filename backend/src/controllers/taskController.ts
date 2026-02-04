@@ -10,7 +10,7 @@ export const getTasks = async (req: any, res: Response) => {
 
     const taskRepository = AppDataSource.getRepository(Task);
 
-    const where: any = { user: { id: userId } };
+    const where: any = { user: { id: Number(userId) } };
     if (status) {
         where.completed = status === "completed";
     }
@@ -34,21 +34,30 @@ export const getTasks = async (req: any, res: Response) => {
 };
 
 export const createTask = async (req: any, res: Response) => {
-    const userId = req.user.userId;
-    const { title, description } = req.body;
+    try {
+        const userId = req.user.userId;
+        const { title, description } = req.body;
 
-    if (!title) return res.status(400).json({ message: "Title required" });
+        if (!title) return res.status(400).json({ message: "Title required" });
 
-    const taskRepository = AppDataSource.getRepository(Task);
-    const userRepository = AppDataSource.getRepository(User);
-    const user = await userRepository.findOneBy({ id: userId });
+        const taskRepository = AppDataSource.getRepository(Task);
+        const userRepository = AppDataSource.getRepository(User);
+        const user = await userRepository.findOneBy({ id: Number(userId) });
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+        if (!user) {
+            console.log("User not found for ID:", userId);
+            return res.status(404).json({ message: "User not found" });
+        }
 
-    const task = taskRepository.create({ title, description, user });
-    await taskRepository.save(task);
+        const task = taskRepository.create({ title, description, user });
+        await taskRepository.save(task);
 
-    res.status(201).json(task);
+        console.log("Task created successfully for user:", user.email);
+        res.status(201).json(task);
+    } catch (error) {
+        console.error("Error in createTask:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 };
 
 export const getTask = async (req: any, res: Response) => {

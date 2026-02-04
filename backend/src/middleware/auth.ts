@@ -10,8 +10,12 @@ export const authenticateToken = (req: any, res: Response, next: NextFunction) =
     if (!token) return res.sendStatus(401);
 
     jwt.verify(token, ACCESS_TOKEN_SECRET, (err: any, user: any) => {
-        if (err) return res.sendStatus(403);
+        if (err) {
+            console.log("JWT Verification Error:", err.message);
+            return res.sendStatus(401);
+        }
         req.user = user;
+        console.log("Authenticated User ID:", user.userId);
         next();
     });
 };
