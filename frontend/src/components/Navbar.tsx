@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { LogOut, CheckSquare } from "lucide-react";
+import { LogOut, CheckSquare, User } from "lucide-react";
 
 export default function Navbar() {
     const { logout, user } = useAuth();
@@ -17,11 +17,25 @@ export default function Navbar() {
         }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <CheckSquare size={32} color="var(--primary)" />
-                <span style={{ fontSize: '20px', fontWeight: 'bold', letterSpacing: '1px' }}>AURA TASKS</span>
+                <span style={{ fontSize: '18px', fontWeight: 'bold', letterSpacing: '1px' }}>TASK MANAGER SYSTEM</span>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                <span style={{ color: 'var(--text-muted)' }}>{user?.email}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        border: '1px solid var(--border)'
+                    }}>
+                        <User size={18} color="var(--primary)" />
+                    </div>
+                    <span style={{ color: 'var(--text)', fontWeight: '500' }}>{user?.username || user?.email}</span>
+                </div>
                 <button onClick={logout} className="btn-ghost" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <LogOut size={18} />
                     Logout
