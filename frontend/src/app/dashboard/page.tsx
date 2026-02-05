@@ -142,9 +142,9 @@ export default function DashboardPage() {
                                 outline: 'none'
                             }}
                         >
-                            <option value="">All Status</option>
-                            <option value="completed">Completed</option>
-                            <option value="pending">Pending</option>
+                            <option value="" style={{ color: 'black' }}>All Status</option>
+                            <option value="completed" style={{ color: 'black' }}>Completed</option>
+                            <option value="pending" style={{ color: 'black' }}>Pending</option>
                         </select>
                     </div>
                 </div>
